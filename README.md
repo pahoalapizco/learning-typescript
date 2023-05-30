@@ -169,3 +169,86 @@ let segundobinario = 0b1210 // error, 2 es inválido
 let primerHexa = 0xfff
 let segundoHexa = 0xffz // error, "z" es inválido
 ```
+
+## Type: boolean
+Los tipos de dato `boolean` solo pueden tomar dos valores `true` o `false`.
+
+```js
+let isEnable: boolean = true
+let isNew = false // Toma el tipo boolean gracias a la inferencia.
+
+isNew = 50 // error
+isEnable = "false" // error
+```
+
+## Type: string
+Los tipos de dato string nos permiten almacenar valores alfanuméricos/cadena de caracteres. 
+Podemos definirilo de varias formas:
+1. Comillas simples:
+```js
+let comillaSimple = 'Esto es un string'
+let comillaSimpleOk = 'Esto es un string que usa "comillas dobles"'
+let comillaSimpleErr = 'Esto es un incorrecto con comillas 'simples' dentro de comillas simples' // error
+```
+2. Comillas dobles:
+```js
+let comillaDoble = "Esto es un string"
+let comillaDobleOk = "Esto es un string que usa 'comillas simples'"
+let comillaDobleErr = "Esto es un incorrecto con comillas "dobles" dentro de comillas dobles"
+```
+3. Backticks:
+```js
+let backtick = `Esto es un string`
+let backtickComSimple = `Esto es un string que usa 'comillas simples'`
+let backtickComDoble = `Esto es un stringq ue usa "comillas dobles"`
+```
+La última forma de asignar un valor `string` tiene varias ventajas, las dos más importantes:
+1. Puede incluir textos en múltiples líneas:
+```js
+let texto = `
+  Este es 
+  un texto
+  con 3 líneas
+`
+```
+2. Podemos concatenar dentro de un mismo `string`
+```js
+let nombre: string = "Paho"
+let edad: number = 31
+
+let concatenar = `Hola mi nombres es ${nombre} y tengo ${edad} años.`
+```
+
+## Type: array
+Los arrays son una colección ordenada de datos. Al declarar un array de un determinado tipo de dato lo debemos hacer con la siguiente sintaxis: `data_type[]` => `number[]` esto es un arreglo de numeros, `string[]` arreglo de strings...
+
+Ejemplos:
+```js
+// file.ts
+let precios = [1,2,3,4.5] // number[]
+precios.push(5)
+console.log("precios", precios)
+
+precios.push("hola") // error
+```
+En el código anterior TypeScript sabe que la variable `precios` es de tipo `number[]`, por lo cuál marca un error al intentar agregar un elemento que no sea de tipo `number`.
+
+Si intentamos hacer operaciones con un array que contiene un detemrinado tipo de dato utilizando otro tipo TypeScript nos marcara error:
+```js
+// file.ts
+let mensaje = ["Buenos", "días"] // string[]
+mensaje.map(item => item * 2) // error
+```
+
+JavaScript tiene una ventaja con los arrays, y es que en ellos podemos guardar diferente información, ya sea númerica, texto, etc. 
+
+En TypeScript también podemos incluir más de un tipo de dato en un array, para hacerlo necesitamos indicarlo de la siguiente manera:
+```js
+let dosTipos: (number | string)[] = ["hola",2,4,6,"mundo"];
+console.log("dosTipos:", dosTipos)
+
+let otrosPrecios: (boolean | number)[];
+otrosPrecios = [True] 
+
+otrosPrecios.push("Hola") // error
+```
