@@ -103,3 +103,69 @@ A partir de la inicialización de una variable TypeScrip deduce (ó infiere) el 
   */
   saludo = 123 // error
 ```
+### Nombres de variables iguales
+TypeScript marcará como error aquellas variables con el mismo nombre a pesar de estar en archivos distintos. Esto no sucederá en entornos preconfigurados como por ejemplo Angular o React, ya que estos trabajan de forma modular o tienen un alcance (scope) para cada variable.
+
+Para que evitar este inconveniento podemos utilizar una función auto ejecutada en cada archivo `.ts`:
+
+```js
+( () => {
+  let nombre = "Paho"
+})()
+```
+
+## Type: number
+El tipo de dato `number` se utiliza para variables que contendran números positivos, negativos y decimales.
+
+### Operaciones
+Con JavaScript, una variable `number` puede concatenarse con un valor o variable `string` utilizacon el operador `+`:
+```js
+// file.js
+let edad = 31 // number
+edad = edad + "1" // "311" --> Stirng
+```
+En el ejemplo anterior lo que JS hizo fue concatenar la cadena "1" al valor de la variable `edad`, conviertiendo así a esta variable en string. Este tipo de prácticas puede incurrir en confusiones y errores.
+Utilizando TypeScrit tenemos restricciones:
+```js
+// file.ts
+let edad = 31 // number, gracias a la inferencia TS resuelva la variable como number
+edad = edad + "1" // error
+edad = edad + 1 // 32
+```
+
+### Variables sin inicializar
+Serán señalados como errores aquellas variables que queramos usar sin haberles dado un valor inicial:
+
+```js
+// file.js
+let edad: number // number
+
+consle.log("Mi edad es:", edad) // TS lo marca como error.
+```
+Cuando no vamos a inicializar una variable al momento de declararla, debemos indicarle el tipo de dato que va a recibir, de lo contrario TypeScript no podra inverir su tipo de dato.
+
+### Covnersión de string a number
+El metodo para hacer la conversión es `parseInt` y solo funciona con string que contenan valores `[0-9]` incluido el punto para detonar valores decimales.
+
+```js
+let precio: number = parseInt("123")
+
+let numeroString: string = "100"
+let nuevoNumero: number;
+nuevoNumero = parseInt(numeroString)
+
+nuevoNumero = parseInt("hola") // Retornara un NaN (Not a Number)
+
+```
+
+### Binarios y Hexadecimales
+TypeScript nos puede indicar error si intentamos definir números binarios que tengan números que no sean 0 o 1 y si declaramos hexadecimales usando valores fuera del rango:
+```js
+//Binarios: se definen colocando "0b" al inicio del valor
+let primerBinario = 0b1010
+let segundobinario = 0b1210 // error, 2 es inválido
+
+//Hexadecimales: se definen colocando "0x" al inicio del valor
+let primerHexa = 0xfff
+let segundoHexa = 0xffz // error, "z" es inválido
+```
