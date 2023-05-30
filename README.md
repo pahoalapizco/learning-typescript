@@ -53,3 +53,53 @@ El siguiente comando permite transpilar en tiempo real los archivos `.ts`:
 ```bash
 npx tsc --watch
 ```
+
+## Tipado en TypeScript
+Es el cómo declaramos una variable, esto hace referencia a la asignación del tipo de dato, conocido como **type annotation**, de este modo evitamos la mezcla de tipos de datos en una sola variable.
+
+JavaScript a diferencia de TypeScript, nos da mucha flaxibilidad a la hora de "tipar" las variables, ya que podemos tener una variable _string_ y luego le asignamos un valor _boolean_. 
+
+```js
+// file.js
+let test = null // tipo: null
+test = "hola" // tipo: string
+test = 333 // tipo: number
+test = false // tipo: boolean
+test = undefined // tipo: undefined
+test = [] // tipo: array
+
+test = { tipo: // objeto
+  name: "Paho",
+  lastName: "Alapizco"
+}
+
+test = (x) => console.log(x) // tipo: función
+```
+Este tipo de flexibilidad sino la manejamos correctamente podemos incurrir en generar bugs u obtener errores inesperados en nuestro código.
+
+Con TypeScript podemos evitar errores de tipado y anomalías en el código.
+En JS declaramos una variable de la siguiente forma:
+
+```js
+// file.js
+let totalAmount = 20
+```
+Al momento de asignarle el `20` a la variable `totalAmount` JS sabe que es de tipo  numérica, pero a medida que código crece el tipo de dato puede cambiar.
+
+La forma de declarar una variable en TypeScrip es la siguiente
+```js
+// file.ts
+let totalAmount: number = 20
+```
+Se de clara la variable `totalAmount` seguida de dos puntos (`:`) los cuales separa la declaración del **type annotation** donde le decimos al código que esa variables `number`, con esta declaración la variable `totalAmount` solo aceptara valores numéricos a lo largo de todo el código o su scope.
+
+## Tipos inferidos
+A partir de la inicialización de una variable TypeScrip deduce (ó infiere) el tipo de dato que representa la variable, y en todo el ciclo de vida de esa variable solo aceptara valores correspondientes al tipo de dato asignado al inicio.
+
+```js
+  let saludo = "Hola" // tipo: String
+  /*
+  ...
+  */
+  saludo = 123 // error
+```
