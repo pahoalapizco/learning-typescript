@@ -151,7 +151,7 @@ El metodo para hacer la conversión es `parseInt` y solo funciona con string que
 let precio: number = parseInt("123")
 
 let numeroString: string = "100"
-let nuevoNumero: number;
+let nuevoNumero: number
 nuevoNumero = parseInt(numeroString)
 
 nuevoNumero = parseInt("hola") // Retornara un NaN (Not a Number)
@@ -244,11 +244,137 @@ JavaScript tiene una ventaja con los arrays, y es que en ellos podemos guardar d
 
 En TypeScript también podemos incluir más de un tipo de dato en un array, para hacerlo necesitamos indicarlo de la siguiente manera:
 ```js
-let dosTipos: (number | string)[] = ["hola",2,4,6,"mundo"];
+let dosTipos: (number | string)[] = ["hola",2,4,6,"mundo"]
 console.log("dosTipos:", dosTipos)
 
-let otrosPrecios: (boolean | number)[];
+let otrosPrecios: (boolean | number)[]
 otrosPrecios = [True] 
 
 otrosPrecios.push("Hola") // error
+```
+
+## Type: any
+`any` Es un tipo de dato exclusivo de TypeScript y nos permite asignarle a la variable cualquier valores (como si estuvieramos trabajando con variables de JS). 
+
+No es recomendable utilizar este tipo de dato, a menos que se este migrando un proyecto de JavaScript a TypeScript y no se conozca a ciencia cierta el tipo de dato que reciven las variables, esto con el fin de no quebrar nada en el proyecto. 
+Por otro lado, si el proyecto ya esta consolidado con TypeScript es una mala práctica hacer uso de `any`.
+
+```js
+let dynamic: any
+dynamic = 0 // type: numeric
+dynamic = '' // type: string
+dynamic =  null // type: null
+dynamic = {} // type: object
+dynamic = [] // type: array
+```
+Una de las desventajas de utilizar `any`, es que no podemos acceder a los metodos propios de un tipo de datos especifico, como `tolowerCase()` de los `string` o `toFixed()` de los `numer`. <br>
+TypeScript nos da dos formas de "setear" o cambiar el tipo de dato any a otro en particular.
+```js
+dynamic = "Hola" // type: any
+const str = (dynamic as string) // type: string
+str.toUpperCase() // Función del tipo de dato string
+
+dynamic = 123 // type: any
+const num = (<number>dynamic) // type: number
+num.toFixed() // Función de un tipo numérico
+```
+Si bien `any` nos brinda "flexibilidad" para manejar varios tipos de datos en una sola variable, no es aconsejable su uso, incluso es una malapractica.
+
+## Union types
+Nos da la flexibilidad de asignar más de un tipo de dato a una variable, pero con las restricciones de solo aceptar valores correspondientes a los tipos indicados.
+
+La forma de aplicar `union types` es similar a lo que vimos con los [arrays](#Type:-array) con varios data types.
+
+```js
+let dynamicUT: (string | number)
+
+dynamicUT = "123" // type: string
+console.log("dynamicUT:", typeof dynamicUT, dynamicUT)
+
+dynamicUT = 456 // type: number
+console.log("dynamicUT:", typeof dynamicUT, dynamicUT)
+```
+Una ventaja de utilizar los union types, es que nuestro editor de código detecta que podemos hacer uso de los metodos correspondientes a los tipos de datos con los que declaramos la variable.
+
+```js
+
+dynamicUT = "hola" // type: string
+console.log("dynamicUT:", dynamicUT.toUpperCase()) // HOLA
+
+dynamicUT = 456.123 // type: number
+console.log("dynamicUT:", dynamicUT.toFixed(1)) // 456.1
+```
+Si segmentamos en un if por el tipo de dato, el editor lo identifica y dependiendo el tipo de dato que se este evaluando son los metodos que nos provee.
+
+```js
+const validandoTipos = (element: string | number) => {
+  if(typeof element === 'string'){
+    console.log("element: ", element.charAt(0))
+  }
+  else {
+    console.log("element: ", element.toFixed(2))
+  }
+}
+```
+| strings | numbers |
+|--|--|
+| ![str](./imgs/str_methods.png) | ![num](./imgs/num_methods.png) |
+
+Los union types son en definitiva una mejor alternativa en tipado dinamico sobre `any`.
+
+## Alias y Literal types
+### Alias
+Los Alias nos permiten darle un nombre a un tipo de dato o a un conjunto de tipos de datos que posteriormente se van a asignar a variables.
+
+Definición de un alias:
+```js
+type UserID = string | number
+```
+Reglas para crear un alias:
+- `type`: Palabra recervada propia de TypeScript, con ella le decimos que estamos creando un "tipo de dato" nuevo.
+- `PascalCase`: Forma de nombrar a los alias, empezanmdo con Mayúscula y separar con Mayúscula el inicio de cada palabra nueva: `UnaVariableNueva`.
+- `=` : A diferencia de los dos puntos (`:`) al crear el alias se le asigna los tipos de datos.
+- `|`: Utilizar cuando se acepta más de un tipo de dato.
+
+Implementamos el alias:
+```js
+let userId: UserID
+
+userId = '123'
+userId = 456
+userId = {} // error
+```
+Una ventaja de utilizar alias, esque podemos ahorrar código y hacerlo más legible cuando en más de una ocasión necesitamos utilziar variables con los mismos tipos de datos que nuestro alias:
+```js
+const validandoTipos = (element: UserID) => {
+  if(typeof element === 'string'){
+    console.log("element: ", element.charAt(0))
+  }
+}
+```
+### Literal types
+Gracias a esto podemos definir de forma literal y explicita los posibles valores que puede recibir una variable.
+```js
+let shirtSize: 'S' | 'M' | 'L' | 'XL'
+shirtSize = 'S' // ok
+shirtSize = 'M' // ok
+shirtSize = 'L' // ok
+shirtSize = 'xl' // Error, porque xl en minuscula no existe en las posibles opciones
+shirtSize = 'jkgsd' // Error, no existe en las posibles opciones.
+```
+Los `literal types` son case sensitive, si definicos valores en mayúscula no podemos utilizar minúscula porque TypeScript nos marcará un error.
+
+### Alias + Literal Types
+Posdemos combiinar ambos conceptos para hacer aun más potente, escalable y reutilizable nuestro código:
+```js
+type Sizes = 'S' | 'M' | 'L' | 'XL';
+
+
+const yourSize = ( userSize: Sizes ) => {
+    console.log(`Tu talla es ${userSize}`);
+}
+
+let shirtSize: Sizes;
+shirtSize = "M";
+yourSize(shirtSize) // M
 ```
