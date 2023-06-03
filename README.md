@@ -378,3 +378,138 @@ let shirtSize: Sizes;
 shirtSize = "M";
 yourSize(shirtSize) // M
 ```
+
+ ## Funciones
+Asignar un tipo (tipos) de dato a los parametros de una función nos ayudan a llevar a cabo una implementación más segura de nuestro código.
+
+Definición de una función con parametros tipados:
+```js
+type Sizes = 'S' | 'M' | 'L' | 'XL'; //Alias y Tipos Literales
+
+const createProductJson = (
+  title: string,
+  createdAt: Date,
+  stock: number,
+  size: Sizes
+) => {
+  return {
+    title,
+    createdAt,
+    stock,
+    size
+  }
+}
+```
+> **NOTA:** El tipo `Date` es el único que podemos definir con si primer letra en mayúscula, a diferencia de los otros tipos de datos como number, etstring, etc. es una mala practica.
+
+Implementación:
+```js
+const producto1 = createProductJson(
+  "titulo",
+  new Date('02/06/2023'),
+  30,
+  'S'
+  // 'XS' // Error porque el valor XS no existe en literal type "Sizes"
+)
+
+// TS nos marcara un error porque no le mandamos el último parametro.
+const producto2 = createProductJson(
+  "titulo",
+  new Date('02/06/2023'),
+  30,
+)
+
+```
+Existen funciones que no requieren estrictamente que se envien todos los parametros, a estos se les llama "parametros opcionales" y se definen con `?` al final del nombre del parametro. 
+```js
+type Sizes = 'S' | 'M' | 'L' | 'XL'; //Alias y Tipos Literales
+
+const createProductJsonV2 = (
+  title: string,
+  createdAt: Date,
+  stock: number,
+  size?: Sizes
+) => {
+  return {
+    title,
+    createdAt,
+    stock,
+    size
+  }
+}
+
+const producto2V2 = createProductJsonV2(
+  "titulo",
+  new Date('02/06/2023'),
+  30,
+)
+```
+> **NOTA:** El lós parametros opcionales deben ir al final, de lo contrario obtendremos un error.
+
+### Retorno
+Así como con las variables, TypeScript utiliza la inferencia para determinar el tipo de dato que retorna una función, y al igual que las variables también las funciones se les asigna un tipo o varios (union types) tipos de dato.
+
+Definición de una función utilizando inferencia
+```js
+const saludar = (nombre: string, apellido: string, edad?: number) => {
+  let saludo = `Hola me llamo ${nombre} ${apellido}`
+  saludo += edad ? `, tengo ${edad} años.` : '.'
+
+  return saludo
+}
+
+const unSaludo = saludar('Paho', 'Alapizco') // type: string
+console.log("unSaludo:", unSaludo)
+```
+La forma de tipar una función es colocando los dos puntos (`:`) inmediatamente despues del parentesis de cierre de la función seguida del tipo de dato que va a retornar la función
+
+
+```js
+const saludarV2 = (nombre: string, apellido: string, edad?: number): string => {
+  let saludo = `Hola me llamo ${nombre} ${apellido}`
+  saludo += edad ? `, tengo ${edad} años.` : '.'
+
+  return saludo
+}
+
+const unSaludoV2 = saludarV2('Paho', 'Alapizco', 31) // type: string
+console.log("unSaludoV2:", unSaludoV2)
+```
+Con TypeScript también podemos encontrar un tipo especial llamado `void` el cual indica que la función no va a retornar ningun valor.
+
+
+```js
+const saludandoAndo = (nombre: string, apellido: string, edad?: number): void => {
+  const unSaludox = saludarV2(nombre, apellido, edad) // type: string
+  console.log("unSaludo sin retorno:", unSaludox)
+}
+
+saludandoAndo('Paho', 'Alapizco', 31)
+```
+> **NOTA:** Si la función esta declarada como `void` e intentamos hacer un retorno TS nos los marcara como un error.
+
+## Objetos en funciones
+Cuando las funciones reciben muchos parametros podemos optimizarlas haciendo uso de un parametros pero de tipo objeto, donde le mandemos los datos necesarios para la función.
+
+Definición de una función que recibe parametro tipado como objeto: 
+```js
+const saludar = (data: { nombre: string, apellido: string, edad?: number }): void => {
+  let saludo = `Hola me llamo ${data.nombre} ${data.apellido}`
+  saludo += data.edad ? `, tengo ${data. dad} años.` : '.'
+
+  console.log(saludo)
+}
+// Sin mandar la edad
+saludar({
+  nombre: 'Gael', 
+  apellido: 'Camacho'
+})
+
+// Mandando la edad
+saludar({
+  nombre: 'David', 
+  apellido: 'Lopez',
+  edad: 33
+})
+```
+Al tipar como un objeto especifico el parametro que recibe la función `saludar`, podemos acceder a sus elementos como `data.key`.
