@@ -513,3 +513,45 @@ saludar({
 })
 ```
 Al tipar como un objeto especifico el parametro que recibe la función `saludar`, podemos acceder a sus elementos como `data.key`.
+
+## Objetos como tipos
+Los alias no se limitan a solo crear "tipados" para una sola variable, sino que nos permite crear tipados para estructuras más complejas como los objetos.
+
+La forma de definir un objeto como estructura:
+```js
+type Product = {
+  title: string,
+  price: number,
+  createAt: Date,
+  stock: number,
+  size?: Sizes
+}
+```
+El alias `Product` podemos utilizarlo para:
+- Tipar una variable que sera un objeto.
+- Tipar parametro de una función
+- Tipar la serie de datos de un array.
+
+```js
+// función
+const crearProducto = (producto: Product):  Product=> {
+  return producto
+}
+
+// variable
+let unProducto: Product = {
+  title: 'Sombrero',
+  price: 30,
+  createAt: new Date('20230506'),
+  stock: 10
+}
+
+// array
+let productos: Product[] = []
+productos.push(crearProducto(unProducto))
+```
+En un array cuando aplicamos un tipado de objetos, TypeScrip solo permitira agregar elementos que coincidan con el tipo que le asignamos, en este caso el objeto y sus tributos.
+```js
+productos.push("Gorra") // error
+```
+
