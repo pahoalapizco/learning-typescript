@@ -28,7 +28,7 @@ type User = {
 const user: User = {
   name: 'Paola',
   username: 'pahoalapizco',
-  // rol: 'cliente' // error
+  // rol: 'cliente' //error
   rol: ROLES.CUSTOMER
 }
 ```
@@ -45,16 +45,16 @@ Las tuplas permiten definir arrays fuertemente tipados, esto quiere decir que de
 **`Definición`**
 Cuando definimos un array como una tupla, debemos asignarle los valores iniciales.
 ```js
-let userData: [string, string, number] = [] // :x: error
-let user: [string, string, number] = ['Paola Alapizco', 'pahoalapizco', 31] // :white_check_mark:
+let userData: [string, string, number] = [] //error
+let user: [string, string, number] = ['Paola Alapizco', 'pahoalapizco', 31]
 ```
 **`Asignación`**
 Si bien al inicio definimos los valores de la tupla, estos pueden cambiar en el ciclo de vida de nuestro código. Sin embargo cuando reasignamos los valores a la tupa debemos respetar el orden de los tipos de datos y la longitud.
 ```js
-user = [] //:x: error
-user = ['Pedrito Peres'] //:x: error
-user = ['Pedrito Peres', 'pepe'] //:x: error
-user = ['Pedrito Peres', 'pepe', 20] // :white_check_mark:
+user = [] //error
+user = ['Pedrito Peres'] //error
+user = ['Pedrito Peres', 'pepe'] //error
+user = ['Pedrito Peres', 'pepe', 20]
 
 // Push no funciona
 user.push('Fulanito')// Lo ignora
@@ -73,3 +73,44 @@ console.log("🚀 nombre:", nombre) // number
 |--|--|
 | ![String](./imgs/02-tuples-desctruc-str.png) | ![Number](./imgs/02-tuples-desctruc-num.png) |
 2. Podemos controlar el tamaño de un array.
+
+## Unknown
+Su traducción literal al español es "desconocido", es una forma de decirle a una variable en TypeScript que su tipo de dato no lo conocemos, nos da la flexibilidad del tipo `any`, pero nos advierte (o avisa) que primero debemos verificar el tipo de dato antes de aplicarle alguna funcionalidad.
+
+**`Definición`**
+```js
+let unknownVar: unknown
+```
+**`Asignación`**
+En ninguna de las asignaciones siguientes obtenemos un error, porque tenemos la flexibilidad de asignarle cualquier tipo de dato.
+```js
+unknownVar = "Hello" // string
+unknownVar = true // bollean
+unknownVar = 123 // number
+unknownVar = {} // object
+```
+
+**`Implementación`**
+Cuando tenemos un tipo `unknown` antes de aplicar alguna funcionalidad, como un `toLowerCase()` para los strings primero debemos verificar que el tipo de dato que contiene la variable sea un `string`.
+```js
+unknownVar.toLowerCase() //error
+
+if(typeof unknownVar === "string"){
+  unknownVar.toLowerCase()
+}
+```
+La verificación de tipos también aplica cuando queremos asignar una variable uknown a una variable tipada
+```js
+let isBool: boolean
+isBool= unknownVar // error
+
+if(typeof unknownVar === "boolean"){
+  isBool= unknownVar // error
+}
+```
+
+**Ventajas**
+1. Tenemos flexibilidad para asignar distintos tipos de datos a una variable.
+2. Evita errores en tiempo de desarrollo al sugerirle al programador que primero verifique el tipo de dato antes de realizar cualquier acción con la variable.
+
+> Nota: Aunque uknown tiene mayor ventaja sobre any, es recomendable evitar hacer uso de estos recursos.
