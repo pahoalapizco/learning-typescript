@@ -1,18 +1,18 @@
-(() => {
   // Enum
-  enum ROLES {
+  export enum ROLES {
     ADMIN = 'admin',
     SELLER = 'vendedor',
     CUSTOMER = 'cliente'
   }
 
   // Alias que asigna un enum como tipo de dato
-  type User = {
+  export type User = {
     name: string,
     username: string,
     rol: ROLES
   }
 
+(() => {
   // Implementación
   const user: User = {
     name: 'Paola',

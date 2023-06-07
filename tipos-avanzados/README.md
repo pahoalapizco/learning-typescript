@@ -30,7 +30,7 @@ type User = {
 const user: User = {
   name: 'Paola',
   username: 'pahoalapizco',
-  // rol: 'cliente' //error
+  // rol: 'cliente' //❌ error
   rol: ROLES.CUSTOMER
 }
 ```
@@ -47,15 +47,15 @@ Las tuplas permiten definir arrays fuertemente tipados, esto quiere decir que de
 **`Definición`**
 Cuando definimos un array como una tupla, debemos asignarle los valores iniciales.
 ```js
-let userData: [string, string, number] = [] //error
+let userData: [string, string, number] = [] //❌ error
 let user: [string, string, number] = ['Paola Alapizco', 'pahoalapizco', 31]
 ```
 **`Asignación`**
 Si bien al inicio definimos los valores de la tupla, estos pueden cambiar en el ciclo de vida de nuestro código. Sin embargo cuando reasignamos los valores a la tupa debemos respetar el orden de los tipos de datos y la longitud.
 ```js
-user = [] //error
-user = ['Pedrito Peres'] //error
-user = ['Pedrito Peres', 'pepe'] //error
+user = [] //❌ error
+user = ['Pedrito Peres'] //❌ error
+user = ['Pedrito Peres', 'pepe'] //❌ error
 user = ['Pedrito Peres', 'pepe', 20]
 
 // Push no funciona
@@ -84,7 +84,7 @@ Su traducción literal al español es "desconocido", es una forma de decirle a u
 let unknownVar: unknown
 ```
 **`Asignación`**
-En ninguna de las asignaciones siguientes obtenemos un error, porque tenemos la flexibilidad de asignarle cualquier tipo de dato.
+En ninguna de las asignaciones siguientes obtenemos un ❌ error, porque tenemos la flexibilidad de asignarle cualquier tipo de dato.
 ```js
 unknownVar = "Hello" // string
 unknownVar = true // bollean
@@ -95,7 +95,7 @@ unknownVar = {} // object
 **`Implementación`**
 Cuando tenemos un tipo `unknown` antes de aplicar alguna funcionalidad, como un `toLowerCase()` para los strings primero debemos verificar que el tipo de dato que contiene la variable sea un `string`.
 ```js
-unknownVar.toLowerCase() //error
+unknownVar.toLowerCase() //❌ error
 
 if(typeof unknownVar === "string"){
   unknownVar.toLowerCase()
@@ -104,10 +104,10 @@ if(typeof unknownVar === "string"){
 La verificación de tipos también aplica cuando queremos asignar una variable uknown a una variable tipada
 ```js
 let isBool: boolean
-isBool= unknownVar // error
+isBool= unknownVar // ❌ error
 
 if(typeof unknownVar === "boolean"){
-  isBool= unknownVar // error
+  isBool= unknownVar // ❌ error
 }
 ```
 
@@ -126,7 +126,7 @@ En una función los parametros opcionales son aquellos que podemos no enviar com
 **`Definición`**
 Los parámetros opcionales llevan el simobolo `?` inmediatamente despues del nombre y se posicionan al final.
 ```js
-// error
+// ❌ error
 const createPorductWithError = (
     id: number, 
     stock?: number, // debe ir al final
@@ -245,3 +245,45 @@ console.log("🚀 prod3:", prod3)
 **Ventajas**
 1. Mayor legibilidad de código.
 2. Menos líneas de código.
+
+### Parámetros Rest
+Es una funcionalidad de JavaScript que nos permite representar una cantiad indefinida de parametros en un array. La forma de definirnos en la función es mediante el spread operators (`...`).
+**`Definición en JavaScript`**
+```js
+const myFunction = (...args) => console.log(args)
+```
+**`Implementación en JavaScript`**
+```js
+myFunction(1,2,3,"Hello", false, { "key": "value" })
+// Resultado: [1,2,3,"Hello", false, { "key": "value" }]
+```
+
+Al ser una funcionalidad de JavaScript también podemos hacer uso de ella en TypeScript pero con la ventaja de aplicar un tipo de dato especifico a los argumentos.
+
+**`Definición en TypeScript`**
+```js
+const myFunction = (...args: string[]) => console.log(args)
+```
+**`Implementación en TypeScript`**
+```js
+myFunction(1,2,3,"Hello", false, { "key": "value" }) //❌ error
+
+myFunction("Este", "Es", "Un", "Ejemplo", "De", "Parametros", "Rest")
+// Resultado: ["Este", "Es", "Un", "Ejemplo", "De", "Parámetros", "Rest"]
+```
+Al asignarle un tipo de dato a los parámetros rest con TS podemos aplicar las funciones nativas de cada tipo. <br>
+Por ejemplo:
+
+```js
+const otherFunction = (...args: string[]) => {
+    const lowerArr = args.map((item: string) => (item.toLowerCase()))
+    console.log("🚀 lowerArr:", lowerArr.join(' '))
+  }
+
+  otherFunction("Este", "Es", "Un", "Ejemplo", "De", "Parametros", "Rest")
+  // Resultado: 🚀 lowerArr: este es un ejemplo de parametros rest
+```
+**Ventajas**
+1. Seguimos teniendo la fexibilidad de JavaScript para manejar parámetros indefinidos, pero aplicando los super poderes del tipado con TypeScript.
+
+
