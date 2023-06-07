@@ -3,7 +3,7 @@
 > :pushpin: Los fundamentos de tipado con TypeScrip se encuentran en el folder [fundamentos](../fundamentos/README.md)
 
 ## New types
----
+
 ### Enums
 Conjunto/set de valores predefinidos. Al tipar una variable con un enum, TypeScript solo permite asignarle uno de los elementos definidos en el enum.
 
@@ -118,7 +118,7 @@ if(typeof unknownVar === "boolean"){
 > Nota: Aunque uknown tiene mayor ventaja sobre any, es recomendable evitar hacer uso de estos recursos.
 
 ## Funciones
----
+
 ### Parámetros opcionales y nullish-coalescing
 En una función los parametros opcionales son aquellos que podemos no enviar como argumento cuando la ejecutamos.
 <br>
@@ -211,4 +211,37 @@ const createPorduct = (
 Utilizando `??` obtenemos los valores que requerimos asignar solo cuando no recibimos los parámetros.
 
 **Ventajas**
-- Forma sencilla de validar si y solo si el valor es undefined o null, y respeta los valores `0`, `false` y vació `""`.
+1. Forma sencilla de validar si y solo si el valor es undefined o null, y respeta los valores `0`, `false` y vació `""`.
+
+### Parámetros por defecto
+Al momento de declarar la función y especificar sus parámetros en lugar de definir un parametro opcional podemos definirle su valor por defecto, así independientemente si le pasamos o no el argumento la función le asigna un valor.
+
+**`Definición`**
+Los parametros por defecto van al final.
+```js
+const createPorduct = (
+    id: number, 
+    name: string, 
+    stock: number = 10, 
+    isNew: boolean =true
+  ) => {
+    id,
+    name,
+    stock,
+    isNew
+  }
+```
+**`Implementación`**
+```js
+const prod1 = createPorduct(1, 'hat')
+const prod2 = createPorduct(2, 'hat', 0, false)
+const prod3 = createPorduct(3, 'hat', 25)
+
+console.log("🚀 prod1:", prod1)
+console.log("🚀 prod2:", prod2)
+console.log("🚀 prod3:", prod3)
+```
+
+**Ventajas**
+1. Mayor legibilidad de código.
+2. Menos líneas de código.
