@@ -2,7 +2,9 @@
 
 > :pushpin: Los fundamentos de tipado con TypeScrip se encuentran en el folder [fundamentos](../fundamentos/README.md)
 
-## Enums
+## New types
+---
+### Enums
 Conjunto/set de valores predefinidos. Al tipar una variable con un enum, TypeScript solo permite asignarle uno de los elementos definidos en el enum.
 
 **`Definición`**
@@ -39,7 +41,7 @@ const user: User = {
 
 [Documentación](https://www.typescriptlang.org/docs/handbook/enums.html)
 
-## Tuples
+### Tuples
 Las tuplas permiten definir arrays fuertemente tipados, esto quiere decir que define el tipo de dato de cada posición del array y por ende también la longitud del mismo.
 
 **`Definición`**
@@ -74,7 +76,7 @@ console.log("🚀 nombre:", nombre) // number
 | ![String](./imgs/02-tuples-desctruc-str.png) | ![Number](./imgs/02-tuples-desctruc-num.png) |
 2. Podemos controlar el tamaño de un array.
 
-## Unknown
+### Unknown
 Su traducción literal al español es "desconocido", es una forma de decirle a una variable en TypeScript que su tipo de dato no lo conocemos, nos da la flexibilidad del tipo `any`, pero nos advierte (o avisa) que primero debemos verificar el tipo de dato antes de aplicarle alguna funcionalidad.
 
 **`Definición`**
@@ -114,3 +116,99 @@ if(typeof unknownVar === "boolean"){
 2. Evita errores en tiempo de desarrollo al sugerirle al programador que primero verifique el tipo de dato antes de realizar cualquier acción con la variable.
 
 > Nota: Aunque uknown tiene mayor ventaja sobre any, es recomendable evitar hacer uso de estos recursos.
+
+## Funciones
+---
+### Parámetros opcionales y nullish-coalescing
+En una función los parametros opcionales son aquellos que podemos no enviar como argumento cuando la ejecutamos.
+<br>
+
+**`Definición`**
+Los parámetros opcionales llevan el simobolo `?` inmediatamente despues del nombre y se posicionan al final.
+```js
+// error
+const createPorductWithError = (
+    id: number, 
+    stock?: number, // debe ir al final
+    name: string, 
+    isNew?: boolean
+  ) => {/*...*/}
+
+
+const createPorduct = (
+    id: number, 
+    name: string, 
+    stock?: number, 
+    isNew?: boolean 
+  ) => {/*...*/}
+```
+Es la función quien se encarga de verificar si se recibio o no el parámetro y en base a eso hace algo. Algunas formas sencillas de verificar si se recibió el valor de un detemrinado parámetro son:
+- `||` (or operator): Si la expresión izquierda es falsy entonces obtendremos la expresión de la derecha como resultado.
+- `??`  (nullish-coalescing): Si y solo si la expresión izquierda es null o undefind entonces obtendremos la expresión de la derecha como resultado.
+
+**`Implementación`**
+Ejemplo con un or operator (`||`)
+```js
+const createPorduct = (
+    id: number, 
+    name: string, 
+    stock?: number, 
+    isNew?: boolean 
+  ) => {
+    return {
+      id,
+      name,
+      stock: stock || 10,
+      isNew: isNew || true
+    }
+  }
+
+  const prod1 = createPorduct(1, 'hat')
+  const prod2 = createPorduct(1, 'hat', 0, false)
+
+  console.log("🚀 prod1:", prod1)
+  console.log("🚀 prod2:", prod2)
+```
+El inconveniente con el operador or `||` es que evalua los valores `falsy`:
+- `false`
+- `0`
+- `""`
+- `null`
+- `undefined`
+- `NaN` 
+En el ejemplo anterior necesitamos respetar los valores `0` y `false` que corresponden a los valores de los parámetros. 
+<br>
+
+![Or Operation](./imgs/04-optionals-or-op.png)
+
+Para solucionar ese problema existe el nullish-coalescing `??` que evaluará solo cuando sea `null` o `undefined`.
+<br>
+
+Ejemplo con nullish-coalesing operator (`??`)
+```js
+const createPorduct = (
+    id: number, 
+    name: string, 
+    stock?: number, 
+    isNew?: boolean 
+  ) => {
+    return {
+      id,
+      name,
+      stock: stock ?? 10,
+      isNew: isNew ?? true
+    }
+  }
+
+  const prod1 = createPorduct(1, 'hat')
+  const prod2 = createPorduct(1, 'hat', 0, false)
+
+  console.log("🚀 prod1:", prod1)
+  console.log("🚀 prod2:", prod2)
+```
+![Or Operation](./imgs/04-optionals-nullish.png)
+
+Utilizando `??` obtenemos los valores que requerimos asignar solo cuando no recibimos los parámetros.
+
+**Ventajas**
+- Forma sencilla de validar si y solo si el valor es undefined o null, y respeta los valores `0`, `false` y vació `""`.
