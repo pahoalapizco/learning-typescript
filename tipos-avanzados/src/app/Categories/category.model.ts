@@ -1,6 +1,4 @@
-export interface Category {
-  id: string | number,
+import { BaseModel } from "@app/base.model"
+export interface Category extends BaseModel {
   name: string,
-  createdAt: Date,
-  updatedAt: Date,
 }
