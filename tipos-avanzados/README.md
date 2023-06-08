@@ -331,3 +331,43 @@ let parsedArrayV2 = parseStrV2(["P", "a", "h", "o"])
 console.log("🚀 parsedArrayV2", parsedArrayV2)
 ```
 Lo que ocurre con esta forma de sobrecargar funciones, es que estamos separando cada una de las posibles entradas y respuestas (en cuanto a tipado), de esta manera TypeScript interpreta que si recibe un `string` entonces regresará un array de strings (`string[]`). La expresión `function parseStrV2(input: unknown): unknown ` es el éltimo posible caso de la sobre carga y se toma como un default.
+
+### Interfaces
+Son una de las características más utilizadas en proyectos basados en TypeScript, ya que describen la estructura de los objetos o como debería verse un obeto. <br> 
+Es similar al `type` (cuando creamos alias) con la diferencia de que una `interface` puede extenderce (heredarse).
+
+**`Definición`**
+```js
+type Size = "S" | "M" | "L" | "XL"
+
+// definición
+interface Product {
+  name: string,
+  price: number,
+  createAt: Date,
+  size: Size,
+  stock?: number,
+  addProduct: function
+}
+```
+**`Implementación`**
+La forma de implementar una interface es igual a la de un alias/type. Puede usarse para tipar un objeto, array, parametros y retorno de funciones,
+```js
+// objeto
+const product: Product = {
+  name: 'hat',
+  price: 30,
+  createAt: new Date(),
+  size: "M",
+  addProduct: () => console.log(this.name)
+}
+// array
+
+// función
+const addProducts = (data: Product): Product[] => {
+  // array
+  const products: Product[] = []
+  products.push(data)
+  return products
+}
+```
