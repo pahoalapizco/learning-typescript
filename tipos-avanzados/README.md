@@ -286,4 +286,48 @@ const otherFunction = (...args: string[]) => {
 **Ventajas**
 1. Seguimos teniendo la fexibilidad de JavaScript para manejar parámetros indefinidos, pero aplicando los super poderes del tipado con TypeScript.
 
+### Sobrecarga de funciones
+La sobrecarga de funciones es cuando definimos más de una función con el mismo nombre pero con diferente numero de parámetros, o en el caso de TypeScript cuando regres diferetnes tipos de datos (union type).
 
+> **NOTA** Solo podemos implementar sobrecarga de funciones con la notación tradicional: `function(params){ ... }`
+
+**`Definición (Sobrebarga en retorno de tipos de datos)`**
+```js
+function parseStr(input: string | string[]): string | string[] {
+    if(typeof input === "string") {
+      return input.split("")
+    } else {
+      return input.join("")
+    }
+  }
+```
+**`Implementación`**
+```js
+let parsedText = parseStr("Paho") // retorna [...]
+let parsedArray = parseStr(["P", "a", "h", "o"]) // retorna "..."
+```
+El inconveniente que tenemos con la sobrecarga definida en la función `parseStr`, es que TypeScript no infiere el tipo de dato retornado, sabe que va a regresar uno u otro, pero no exactamente cuál obtuvo de retorno.  <br>
+Para corroborar el tipo de dato que regresó a función podemos aplicar una validación de tipos:
+```js
+if(typeof parsedText === 'string') {
+  console.log("🚀", parsedText.toUpperCase())
+} else if (Array.isArray(parsedText)){
+  const test = parsedText.map(item => (item + "-word"))
+  console.log("🚀 test:", test)
+}
+```
+El código funciona pero no es lo más viable, para ello podemos implementar la sofrecarga de la siguiente manera:
+```js
+function parseStrV2(input: string): string[]
+function parseStrV2(input: string[]): string
+function parseStrV2(input: unknown): unknown {
+  if(typeof input === "string") {
+    return input.split("")
+  } else if (Array.isArray(input)) {
+    return input.join("")
+  }
+}
+let parsedArrayV2 = parseStrV2(["P", "a", "h", "o"])
+console.log("🚀 parsedArrayV2", parsedArrayV2)
+```
+Lo que ocurre con esta forma de sobrecargar funciones, es que estamos separando cada una de las posibles entradas y respuestas (en cuanto a tipado), de esta manera TypeScript interpreta que si recibe un `string` entonces regresará un array de strings (`string[]`). La expresión `function parseStrV2(input: unknown): unknown ` es el éltimo posible caso de la sobre carga y se toma como un default.
