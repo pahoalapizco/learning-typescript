@@ -1,10 +1,9 @@
 import { faker } from '@faker-js/faker'
-import { addProduct, products, updateProduct, deleteProduct } from "./Products/product.services"
-import { Product } from './Products/product.model'
+import { addProduct } from "./Products/product.services"
+
 
 for (let i = 0; i < 20; i++) {
   addProduct({
-    id: i === 3 ? 'hola' : faker.string.uuid(),
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     image: faker.image.url(),
@@ -14,11 +13,7 @@ for (let i = 0; i < 20; i++) {
     size: faker.helpers.arrayElement(['S', 'M', 'L', 'XL']),
     isNew: faker.datatype.boolean(),
     stock: faker.number.int({ min: 10, max: 100 }),
-    createdAt: faker.date.recent(),
-    category: {
-      id: faker.string.uuid(),
-      name: faker.commerce.department()
-    }
+    categoryId: faker.string.uuid(),
   })
 }
 

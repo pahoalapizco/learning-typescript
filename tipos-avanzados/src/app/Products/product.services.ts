@@ -1,9 +1,22 @@
+import { faker } from '@faker-js/faker'
 import { Product } from "@products/product.model"
+import { CreateProductDTO } from "@products/product.dto"
 
 export const products: Product[] = []
 
-export const addProduct = (data: Product): void =>{
-  products.push(data)
+export const addProduct = (data: CreateProductDTO): void =>{
+  products.push({
+    ...data,
+    id: faker.string.uuid(),
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+    category: {
+      id: faker.string.uuid(),
+      name: faker.commerce.department(),
+      createdAt: faker.date.recent(),
+      updatedAt: faker.date.recent(),
+    }
+  })
 }
 
 export const getProduct = (id: string | number): Product | undefined => {

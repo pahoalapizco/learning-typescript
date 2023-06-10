@@ -115,7 +115,7 @@ if(typeof unknownVar === "boolean"){
 1. Tenemos flexibilidad para asignar distintos tipos de datos a una variable.
 2. Evita errores en tiempo de desarrollo al sugerirle al programador que primero verifique el tipo de dato antes de realizar cualquier acción con la variable.
 
-> Nota: Aunque uknown tiene mayor ventaja sobre any, es recomendable evitar hacer uso de estos recursos.
+> :writing_hand: Nota: Aunque uknown tiene mayor ventaja sobre any, es recomendable evitar hacer uso de estos recursos.
 
 ## Funciones
 
@@ -289,7 +289,7 @@ const otherFunction = (...args: string[]) => {
 ### Sobrecarga de funciones
 La sobrecarga de funciones es cuando definimos más de una función con el mismo nombre pero con diferente numero de parámetros, o en el caso de TypeScript cuando regres diferetnes tipos de datos (union type).
 
-> **NOTA** Solo podemos implementar sobrecarga de funciones con la notación tradicional: `function(params){ ... }`
+> :writing_hand: **NOTA** Solo podemos implementar sobrecarga de funciones con la notación tradicional: `function(params){ ... }`
 
 **`Definición (Sobrebarga en retorno de tipos de datos)`**
 ```js
@@ -371,3 +371,56 @@ const addProducts = (data: Product): Product[] => {
   return products
 }
 ```
+
+## Utility types
+Utilidades especiale que porporciona TypeScript para hacer código reutilizable. 
+
+### DTOs
+No es un utility type, es más bien un concepto/práctica utilizado en programación para definir los datos con los que vamos a trabajar. DTO por sus iniciales de "_Data Transfer Object_" usualmente son utilizados para mapear datos de Bases de Datos, y como es el caso cuando trabajamos con BBDD al hacer un `INSERT` hay datos que no es necesario mandarlos explicitamente, como por ejemplo los `id's`, la propia BBDD los genera o el `createdAt` que se puede declarar como un default. 
+```js
+{
+  id: '123456',
+  name: 'Hat',
+  price: 50,
+  createdAt: '2023-06-09'
+}
+```
+Así que podriamos omitr esos datos que son autogenrados, sin embargo esto no quiere decir que los datos no esten o no pertenezcan al objeto, sino que al momento de crearlos no son requeridos.
+```js
+{
+  name: 'Hat',
+  price: 50,
+}
+```
+
+### Omit
+`Omit` si es un utility type, y como su nombre lo dice, nos permite omitir propiedades, datos, campos que no necesitamos mandar para una acción en especifico. En el ejemplo descrito en el apartado de DTO serian `id` y `createAt`.
+
+**`Definición`**
+Con type:
+```js
+type CreateProductDTO = Omit<Product, 'id', 'createdAt' >
+```
+Con interface:
+```js
+interface CreateProductDTO extends Omit<Product, 'id', 'createdAt' > {
+  // Cuerpo de con los objetos adicionales que tendría la interface DTO
+}
+```
+
+### Pick
+El utility type `Pick` es lo contrartio a `Omit`, ya que le decimos las propiedades que queremos tener en el objeto DTO.
+
+**`Definición`**
+Con type:
+```js
+type CreateProductDTO = Pick<Product, 'id', 'createdAt' >
+```
+Con interface:
+```js
+interface CreateProductDTO extends Pick<Product, 'name', 'price' > {
+  // Cuerpo de con los objetos adicionales que tendría la interface DTO
+}
+```
+
+> :writing_hand: **Nota**: Es una buena práctica separar los DTOs en archivos distintos a las Interfaces.
