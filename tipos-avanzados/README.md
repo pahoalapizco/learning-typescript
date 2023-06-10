@@ -457,9 +457,27 @@ Con enterface
 interface UpdateProductDTO extends Required<Product> { /*...*/ }
 ```
 
-> :writing_hand: **NOTA** También podemos utilizar Partial a partir de un DTO, ya que los DTOs también son interfaces
+> :writing_hand: **NOTA** También podemos utilizar Required a partir de un DTO, ya que los DTOs también son interfaces
 
 Con enterface
 ```js
 interface UpdateProductDTO extends Required<CreateProductDTO> { /*...*/ }
+```
+
+### Readonly
+Aplica de forma general la propiedad readonly a todos los atributos del `type` o `interface` que tomemos como base.
+
+**`Definición`**
+Con type
+```js
+type FindProductsDTO = Readonly<Product>
+```
+Con enterface
+```js
+interface FindProductsDTO extends Readonly<Product> { /*...*/ }
+```
+Si bien en el ejemplo se aplica el utility type `Readonly` a la interface `Product`, esto ocasionaria un inconveniente ya que TypeScript nos pediria que en la definición de un objeto tupado como `FindProductsDTO` le mandemos TODAS las propiedades definidad en la interface original. <br>
+Para resolver ese problema (claro dependiendo del caso) podemos combilar `Readonly` y `Partial` para hacer más flexible a `FindProductsDTO`
+```js
+interface FindProductsDTO extends Readonly<Partial <Product> > { /*...*/ }
 ```

@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { Product } from "@products/product.model"
-import { CreateProductDTO, UpdateProductDTO } from "@products/product.dto"
+import { CreateProductDTO, FindProductDTO, UpdateProductDTO } from "@products/product.dto"
 
 export const products: Product[] = []
 
@@ -23,6 +23,16 @@ export const getProduct = (id: string | number): Product | undefined => {
   const idx = products.findIndex.call(products, item => item.id === id)
   if (idx >= 0) return products[idx]
   else return undefined
+}
+
+export const findProducts = (data: FindProductDTO): Product[] => {
+  let response: Product[] = []
+  Object.keys(data).forEach((key: string) => {
+    const filtered: Product[] = products.filter(prod => prod[key as keyof typeof prod] === data[key as keyof typeof data])
+    response.push(...filtered)
+  })
+
+  return response
 }
 
 export const updateProduct = (id: string | number, changed: UpdateProductDTO): Product  | undefined=> {

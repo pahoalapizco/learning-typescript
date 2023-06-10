@@ -1,13 +1,14 @@
 import { faker } from '@faker-js/faker'
-import { addProduct, products, updateProduct } from "./Products/product.services"
+import { addProduct, products, updateProduct, findProducts } from "./Products/product.services"
+import { Product } from './Products/product.model'
 
 
 for (let i = 0; i < 20; i++) {
   addProduct({
-    name: faker.commerce.productName(),
+    name: (i <= 5) ? 'Red Hat' : faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     image: faker.image.url(),
-    color: faker.color.human(),
+    color: (i > 17) ? 'Rosa Mexicano' :faker.color.human(),
     price: parseInt(faker.commerce.price(), 10),
     tags: [faker.string.alphanumeric()],
     size: faker.helpers.arrayElement(['S', 'M', 'L', 'XL']),
@@ -23,12 +24,22 @@ for (let i = 0; i < 20; i++) {
 // })
 
 
-console.log("🚀 products:", products[0])
-const productId = products[0].id
-const changes = updateProduct(productId, {
-  name: 'Red Hat',
-  price: 500
-})
+/* Update */
+// console.log("🚀 products:", products[0])
+// const productId = products[0].id
+// const changes = updateProduct(productId, {
+//   name: 'Red Hat',
+//   price: 500
+// })
 
-console.log("🚀 products:", products[0])
-console.log("🚀 changes:", changes)
+// console.log("🚀 products:", products[0])
+// console.log("🚀 changes:", changes)
+
+
+/* find */
+const filters = {
+  name: 'Red Hat',
+  color: 'Rosa Mexicano'
+}
+const prods: Product[] = findProducts(filters)
+console.log("🚀 prods:", prods)
