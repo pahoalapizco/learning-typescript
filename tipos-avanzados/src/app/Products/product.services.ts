@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { Product } from "@products/product.model"
-import { CreateProductDTO } from "@products/product.dto"
+import { CreateProductDTO, UpdateProductDTO } from "@products/product.dto"
 
 export const products: Product[] = []
 
@@ -25,13 +25,13 @@ export const getProduct = (id: string | number): Product | undefined => {
   else return undefined
 }
 
-export const updateProduct = (id: string | number, product: Product): Product  | undefined=> {
-  const idx: number = products.findIndex.call(products, item => item.id === id)
+export const updateProduct = (id: string | number, changed: UpdateProductDTO): Product  | undefined=> {
+  const idx: number = products.findIndex(item => item.id === id)
   let response: Product | undefined
   if (idx >= 0) {
     products[idx] = {
       ...products[idx],
-      ...product
+      ...changed
     };
     response = products[idx]
   } else {
@@ -42,7 +42,7 @@ export const updateProduct = (id: string | number, product: Product): Product  |
 }
 
 export const deleteProduct = (id: string | number): number | undefined => {
-  const idx: number = products.findIndex.call(products, item => item.id === id)
+  const idx: number = products.findIndex(item => item.id === id)
   let response: number | undefined
   if (idx >= 0) {
     products.splice(idx, 1)

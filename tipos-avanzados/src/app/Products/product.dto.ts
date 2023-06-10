@@ -4,3 +4,4 @@ export interface CreateProductDTO extends Omit<Product, 'id' | 'createdAt' | 'up
   categoryId: string
 }
 
+export interface UpdateProductDTO extends Partial<Product>  { }

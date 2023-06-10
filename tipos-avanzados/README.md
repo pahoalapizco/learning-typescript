@@ -424,3 +424,42 @@ interface CreateProductDTO extends Pick<Product, 'name', 'price' > {
 ```
 
 > :writing_hand: **Nota**: Es una buena práctica separar los DTOs en archivos distintos a las Interfaces.
+
+### Partial
+Utilidad que nos permite crear `types` o `interfaces` a partir de otra y convertir su atributos en opcionales. 
+
+**`Definición`**
+Con type
+```js
+type UpdateProductDTO = Partial<Product>
+```
+Con enterface
+```js
+interface UpdateProductDTO extends Partial<Product> { /*...*/ }
+```
+
+> :writing_hand: **NOTA** También podemos utilizar Partial a partir de un DTO, ya que los DTOs también son interfaces
+
+Con enterface
+```js
+interface UpdateProductDTO extends Partial<CreateProductDTO> { /*...*/ }
+```
+
+### Required
+Es el contrario de Partial, con esta utilidad hacemos que todas las propiedades de una interfaz previa sean requeridas.
+**`Definición`**
+Con type
+```js
+type UpdateProductDTO = Required<Product>
+```
+Con enterface
+```js
+interface UpdateProductDTO extends Required<Product> { /*...*/ }
+```
+
+> :writing_hand: **NOTA** También podemos utilizar Partial a partir de un DTO, ya que los DTOs también son interfaces
+
+Con enterface
+```js
+interface UpdateProductDTO extends Required<CreateProductDTO> { /*...*/ }
+```
