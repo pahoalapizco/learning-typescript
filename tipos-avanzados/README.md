@@ -481,6 +481,36 @@ Para resolver ese problema (claro dependiendo del caso) podemos combilar `Readon
 ```js
 interface FindProductsDTO extends Readonly<Partial <Product> > { /*...*/ }
 ```
+### ReadonlyArray
+Este utility type evita la mutación de un array. Ideal para prevenir cambios arbitrarios a un array durante el desarrollo. 
+**`Definición`**
+Con variables
+```js
+const array: ReadonlyArray<number> = [1, 2, 3]
+array.push(4) //❌ error
+```
+Con types
+```js
+type Product = {
+  name: string,
+  description: string,
+  image: string,
+  color: string,
+  price: number,
+  tags: ReadonlyArray<string>[]
+  // .....
+}
+```
+Extendiendo de una interface
+```js
+interface FinfProductDTO extends Readonly<Partial <Omit <Product, 'tags'> > >  {
+
+  tags: ReadonlyArray<string>[]
+  // .....
+}
+```
+En el ejmplo que extiende de una `interface` encontramos el siguiente anidamiento `Readonly<Partial <Omit <Product, 'tags'> > >`, el cual ssignifica:
+> De `Product` vamos a omitir la propiedad `tag`, el resto de propiedades pertenecientes  `Product` seran opcionales (`partial`) y a su ves seran de solo lectura (`Readonly`).
 
 ## Tipado por indice
 Es una forma de acceder al tipo de dato de un atributo especifico de un `type`  o `interface`. <br>
@@ -504,3 +534,4 @@ const getProductByName = (name: Product['name']): Product => {
 }
 ```
 Acceder de esta forma al tipado de lso atributos de una `interface` es sumamente útil para asegurar el tipado de una variable, parámetro o atributo, de esta manera evitamos inconvenientes si en un futuro el tipado de una `interface` cambia.
+
