@@ -19,7 +19,7 @@ export const addProduct = (data: CreateProductDTO): void =>{
   })
 }
 
-export const getProduct = (id: string | number): Product | undefined => {
+export const getProduct = (id: Product['id'] | number): Product | undefined => {
   const idx = products.findIndex.call(products, item => item.id === id)
   if (idx >= 0) return products[idx]
   else return undefined
@@ -35,7 +35,12 @@ export const findProducts = (data: FindProductDTO): Product[] => {
   return response
 }
 
-export const updateProduct = (id: string | number, changed: UpdateProductDTO): Product  | undefined=> {
+export const getProductsByName = (name: Product['name']): Product[] => {
+  const prod: Product[] = products.filter(item => item.name === name)
+  return prod
+}
+
+export const updateProduct = (id: Product['id'], changed: UpdateProductDTO): Product  | undefined=> {
   const idx: number = products.findIndex(item => item.id === id)
   let response: Product | undefined
   if (idx >= 0) {

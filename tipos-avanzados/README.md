@@ -481,3 +481,26 @@ Para resolver ese problema (claro dependiendo del caso) podemos combilar `Readon
 ```js
 interface FindProductsDTO extends Readonly<Partial <Product> > { /*...*/ }
 ```
+
+## Tipado por indice
+Es una forma de acceder al tipo de dato de un atributo especifico de un `type`  o `interface`. <br>
+Del interface `Product`
+```js
+// Prododuct
+interface Product {
+  name: string,
+  description: string,
+  image: string,
+  color: string,
+  price: number,
+  // .....
+}
+```
+Para acceder al tipo de dato de `name` lo hacemos así: `Product['name']` lo que obtendremos es un tipo `string`. <br>
+**`Implementación`**
+```js
+const getProductByName = (name: Product['name']): Product => { 
+  // ...
+}
+```
+Acceder de esta forma al tipado de lso atributos de una `interface` es sumamente útil para asegurar el tipado de una variable, parámetro o atributo, de esta manera evitamos inconvenientes si en un futuro el tipado de una `interface` cambia.
