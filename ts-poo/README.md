@@ -31,4 +31,37 @@ console.log("🚀 date:", date)
 ```
 Al crear el objeto `data` el tipado inferido de TypeScript define esa variable como de tipo `MyDate` (clase).
 
+## Métodos
+Funciones que agrean comportamiento a los objetos. Puedes o no recibir parámetros, pueden o no retornar algo.
 
+**`Definición`**
+Los metodos de una clase no necesitan llevar la palabra recerbada `function` al inicio de su definición.
+```js
+class MyDate {
+  /* atributos */
+  // ... 
+
+  /* Constructor */
+  // ... 
+
+  /* Métodos */
+  printDate(): string {
+    return `${this.day}/${this.month}/${this.year}`
+  }
+
+  add(amount: number, type: "days" | "months" | "years"): string {
+    if(type === "days") {
+      this.day += amount
+    }
+    if(type === "months") {
+      this.month += amount
+    }
+    if(type === "years") {
+      this.year += amount
+    }
+
+    return `${this.day}/${this.month}/${this.year}`
+  }
+}
+```
+> :warning: **NOTA**: El método `add()` del ejemplo no es la forma correcta de agregar dias, meses o años a una fecha.
