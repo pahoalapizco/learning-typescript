@@ -409,6 +409,46 @@ max.name = "Mini max"
 max.sayHello() // Obtenemos en la impresión el nombre del perrito, pero poque se obtudo desde dentro de la clase Dog.
 ```
 
-
 > ✍️ **NOTA**: `protected` es una combinación de `public` y `private`, podemos acceder al elemento (public) pero no podemos modificarlo (private)
 
+## Estaticos
+En programación orientada a objetos, podemos encontrar propiedades y métodos estaticos pertenecientes a una clase, pero **¿qué significa que sean estaticos?**, podemos acceder tanto a las propiedades y métodos de una clase sin crear una instancia previa de la clase. 
+
+Para definir a un elemento como estatico lo hacemos con la palabra recervada `static`.
+**`Definición`**
+```js
+class MyMath {
+  static PI: number = 3.1416
+
+  static max(...numbers: number[]): number {
+    return numbers.reduce((max, item) => max >= item  ? max : item, 0)
+  }
+}
+
+// implementación:
+console.log(MyMath.PI) // 3.1416
+console.log(MyMath.max(1,2,3,45,82,98, 589)) //  589
+
+
+const math = new MyMath()
+// ❌ no es necesario crear la instancia por que la propiedad fue declarada como static
+math.PI 
+math.max(1,2,3,45,82,98, 589)
+```
+Si nembargo cuando las propiedades son estaticas asi como podemos invocarlas sin crear una instancia de la clase, también modificar su valor.
+```js
+console.log(MyMath.PI) // 3.1416
+MyMath.PI = 1000
+console.log(MyMath.PI) // 1000
+```
+Para evitar este inconveniente la marcamos como `readonly`.
+```js
+class MyMath {
+  static readonly PI: number = 3.1416
+
+  /* Métodos */
+}
+console.log(MyMath.PI) // 3.1416
+MyMath.PI = 1000 // ❌ ya no podemos asignarle un valor.
+console.log(MyMath.PI) // 1000
+```
