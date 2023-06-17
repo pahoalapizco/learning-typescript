@@ -280,3 +280,97 @@ myObjClass.propertieTwo = 1001 // ❌ Obtendremos un error, el valor esta fuera 
 
 
 >  ⚠️ **NOTA**: Por buenas prácticas el nombre de las propiedades de las clases privadas deben iniciar con un guión bajo (`_`) para 1. Distinguir que la variable es privada, 2. Evitar que choque la declaración del getter y setter con el nombre de la propiedad.
+
+## Herencia
+La herencia es un mecanismo de la programación orientada objetos que nos permite extender o derivar las propiedades y metodos de una clase a otra.
+
+Para crear clases heredadas lo hacemos con la palabra recerbada `extends` seguida del nombre de la clase padre.
+
+**`Definición`**
+```js
+// Clase padre
+class Animal {  
+  /* Constructor */
+  constructor(
+    public name: string = ""
+  ) { }
+
+  greeting(): string {
+    return `I'm ${this.name}`
+  }
+}
+
+// Clase Hijo
+class Dog extends Animal{ }
+```
+Simplemente con indicarle a la clase `Dog` que extiende de `Animal` la clase hijo puede acceder a las propiedades y métodos de su padre/
+
+**`Implementación`**
+```js
+const max = new Dog("max")
+console.log(max.greeting()) //  I'm max
+```
+Las clases hijo ademsa de contar con las funcionalidades del padre, también puede tener su propio comportamiento (métodos)
+
+**`Definición: métodos`**
+```js
+// Clase Hijo
+class Dog extends Animal{
+  woof(times: number): void {
+    for(let i = 0; i < times; i++){
+      console.log("Woof!")
+    }
+  }
+}
+```
+**`Implementación`**
+```js
+const max = new Dog("max")
+console.log(max.greeting()) //  I'm max
+max.woof(3) // Woof! \n Woof! \nWoof!
+
+const animal = new Animal("Max")
+animal.woof(1) //❌ Obtendremos un error porque la clase animal no posee la función woof.
+```
+Otra caracteristica de las clases heredadas es que también pueden tener sus propias propiedades.
+
+Cuando la clase hijo tiene definido un constructor en el cual recibe como atributo la propiedad heredada del padre, debemos utilizar la función `super()` para indicarle que parametros son de la clase superior.
+**`Definición: propiedades (❌ error)`**
+```js
+class Dog extends Veicle {
+  // ❌ name es una propiedad heredada de Animal, 
+  // si la declaramos como public automaticamente podemos acceder a ella con this
+  // omitiendo su origen desde aniaml
+  constructor(
+    public name: string = "",
+    public owner: string = ""
+  ){
+    super(name)
+    this.name = name // ❌ 
+  }
+  /* Métodos */
+  // .
+}..
+```
+Para evitar el error del código de arriba, a la propiedad heredada debemos quitarle el tipo acceso, de esa forma TypeScript determina que no pertenece a las propiedades internas de la clase.
+**`Definición: propiedades (✅)`**
+```js
+class Dog extends Veicle{
+  constructor(
+    name: string = "",
+    public owner: string = ""
+  ){    
+    super(name)
+  }
+  /* Métodos */
+  // ...
+}
+```
+
+**`Implementación`**
+```js
+const max = new Dog("Max","Paho")
+console.log(max.greeting()) //  I'm max
+max.woof(3) // Woof! \n Woof! \nWoof!
+console.log(max.owner) // Paho
+```
