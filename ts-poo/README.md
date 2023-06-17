@@ -86,6 +86,9 @@ class MyClass {
   propertyOne: string; // TS infiere la propiedad como public.
   public propertyTwo: number; 
 
+  /* Constructor */
+  // ... 
+
   /* Métodos */
   methodOne() { /* code here */ } // TS infiere el método como public.
   public methodTwo() { /* code here */ }
@@ -105,6 +108,9 @@ class MyClass {
   public propertieTwo: number; 
   private propertyThree: boolean;
 
+  /* Constructor */
+  // ... 
+
   /* Métodos */
   methodOne() { /* code here */ } // TS infiere el método como public.
   public methodTwo() { /* code here */ }
@@ -120,3 +126,46 @@ myObjClass.methodTwo() // ✅
 myObjClass.propertyThree = false; // ❌
 myObjClass.methodThree(); // ❌
 ```
+
+## Constructor
+El constructor es una función que se ejecuta cuando creamos la instancia de la clase. Es usado para inicializar las propiedades de la clase.
+
+Un de las caracteristicas que tiene la función `constructor` en TypeScript es que nos permite hacer la declaración de las propiedades directamente en sus parametros. 
+
+**`Definición tradicional`**
+```js
+class MyClass {
+  /* Propiedades */
+  propertieOne: string; // TS infiere la propiedad como public.
+  propertieTwo: number; 
+  private propertyThree: boolean;
+
+  /* Constructor */
+  constructor(propertieOne, propertieTwo, propertyThree) {
+    this.propertieOne = propertieOne;
+    this.propertieTwo = propertieTwo;
+    this.propertyThree = propertyThree;
+  }
+
+  /* Métodos */
+  // ...
+}
+```
+
+**`Definición declaración de propiedades`**
+```js
+class MyClass {  /* Constructor */
+  constructor(
+    public propertieOne: string = "",
+    public propertieTwo: number = 0,
+    private propertyThree: boolean = false
+  ) { /*...*/ }
+
+  /* Métodos */
+  // ...
+}
+```
+La regla que tiene la definición desde el constructor es que se les debe decir explicitamente el tipo de acceso que tendran, de lo contrario el alcance de se parametro sera local al constructor.
+
+En el ejemplo de arriba se esta asignando un valor por defecto a cada propiedad, esto permite crear instancias de un objeto sin enviar ningun argumento, se veria así `const myObj = new MyClass()`, en caso contrario TS nos marcaria la creación del objeto como erronea.
+
