@@ -337,7 +337,7 @@ Otra caracteristica de las clases heredadas es que también pueden tener sus pro
 Cuando la clase hijo tiene definido un constructor en el cual recibe como atributo la propiedad heredada del padre, debemos utilizar la función `super()` para indicarle que parametros son de la clase superior.
 **`Definición: propiedades (❌ error)`**
 ```js
-class Dog extends Veicle {
+class Dog extends Animal {
   // ❌ name es una propiedad heredada de Animal, 
   // si la declaramos como public automaticamente podemos acceder a ella con this
   // omitiendo su origen desde aniaml
@@ -355,7 +355,7 @@ class Dog extends Veicle {
 Para evitar el error del código de arriba, a la propiedad heredada debemos quitarle el tipo acceso, de esa forma TypeScript determina que no pertenece a las propiedades internas de la clase.
 **`Definición: propiedades (✅)`**
 ```js
-class Dog extends Veicle{
+class Dog extends Animal{
   constructor(
     name: string = "",
     public owner: string = ""
@@ -374,3 +374,41 @@ console.log(max.greeting()) //  I'm max
 max.woof(3) // Woof! \n Woof! \nWoof!
 console.log(max.owner) // Paho
 ```
+
+## Acceso protegido
+Al utilizar la herencia entre clases podemos llegar a incurrir en la modificación arbitraria de las propiedades de la clase padre. 
+
+Una forma de evitar ese tipo de modificaciones es utilizar el acceso protegido de las propiedades y metodos de una clase. Para protegerlas debemos cambiar la palabra recervada `public` por `protected`.
+
+**`Definición`**
+```js
+// Clase padre
+class Animal {  
+  /* Constructor */
+  constructor(
+    protected name: string = ""
+  ) { }
+
+  greeting(): string {
+    return `I'm ${this.name}`
+  }
+}
+
+// Clase Hijo
+class Dog extends Animal{ 
+  sayHello(): void {
+    console.log(`Hi, my name is ${this.name}, and I'm a lovely dog.`)
+  }
+}
+
+const max = new Dog("Max","Paho")
+// ❌ la declaración con protected restringe la modificación y visualización de los elementos por fuera de la clase padre e hijas.
+console.log(max.name)
+max.name = "Mini max" 
+
+max.sayHello() // Obtenemos en la impresión el nombre del perrito, pero poque se obtudo desde dentro de la clase Dog.
+```
+
+
+> ✍️ **NOTA**: `protected` es una combinación de `public` y `private`, podemos acceder al elemento (public) pero no podemos modificarlo (private)
+

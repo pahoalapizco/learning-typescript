@@ -1,7 +1,7 @@
 export class Animal {
   /* Constructor */
   constructor(
-    public name: string = ""
+    protected name: string = ""
   ) { }
 
   greeting(): string {
@@ -28,5 +28,6 @@ export class Dog extends Animal{
   const max = new Dog("Max","Paho")
   console.log(max.greeting()) //  I'm max
   max.woof(3) // Woof! \n Woof! \nWoof!
-  console.log(max.owner) // Paho
+  // console.log(max.owner) // Paho
+  // console.log(max.name) // Paho
 })()
