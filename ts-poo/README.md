@@ -201,6 +201,35 @@ myObjClass.propertieTwo // ❌ Se declaró como privada pero no tiene su metodo 
 myObjClass.propertyThree // ✅
 ```
 
+Otra particuraridad de los `getters` es que podemos crear métodos que no necesariamente representen a una propiedad privada, sino que se comporten como una propiedad pero por dentro pueda ejecutar un código y luego renornar algo.
+
+```js
+class MyClass {  /* Constructor */
+  constructor(
+    public propertieOne: string = "",
+    private propertieTwo: number = 0,
+    private _propertyThree: boolean = false
+  ) { /*...*/ }
+
+  /* Getters */
+  get propertyThree() {
+    return this._propertyThree
+  }
+  get saludo(): string {
+    return `Hi! ${this._propertieOne}!`
+  }
+  /* Métodos */
+  // ...
+
+  const myObj = new MyClass("Paho")
+  myObj.saludo() // ❌ Al ser creado con get no es necesario colocar los parentesis.
+  myObj.saludo // ✅ Al ser creado con get actua como una propiedad más de la clase
+}
+```
+
+
+> ✍️ **NOTA**: Todos los métodos que se creen como `get` deben retornar algo.
+
 ### Setters
 Los `setters` es una forma controlada de modificar a las **propiedades** privadas de una clase, es lo contrario al `getter`. 
 
