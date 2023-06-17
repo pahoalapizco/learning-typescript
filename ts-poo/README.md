@@ -175,8 +175,6 @@ Los `getters` es una forma controlada de acceder a las **propiedades** privadas 
 
 Un `getter` es en realidad un método que lleva el nombre de la propiedad a la que representa, con la diferencia de que al inicio se coloca la palabra recervada `get`.
 
->  ⚠️ **NOTA**: Por buenas prácticas el nombre de las propiedades de las clases privadas deben iniciar con un guión bajo (`_`) para 1. Distinguir que la variable es privada, 2. Evitar que choque la declaración del getter con el nombre de la propiedad.
-
 **`Definición`**
 ```js
 class MyClass {  /* Constructor */
@@ -194,7 +192,7 @@ class MyClass {  /* Constructor */
   // ...
 }
 ```
-Un `getter` al ser una función puede incluir logica adicional antes de hacer el return de su respectiva propiedad. Otra ventaja es que para hacer uso de un `getter` lo podemos hacer como si pueda la propiedad misma no como el llamado a un método normal.
+Un `getter` al ser una función puede incluir logica adicional antes de hacer el return de su respectiva propiedad. Otra ventaja es que para hacer uso de un `getter` lo podemos hacer como si pueda la propiedad misma no como el llamado a un método normal. Ademas al especificar que el metodo es un `get` debemos hacer el `return` de valor y __tipo de dato__ correspondiente a la propiedad.
 
 **`Implementación`**
 ```js
@@ -204,3 +202,52 @@ myObjClass.propertyThree // ✅
 ```
 
 ### Setters
+Los `setters` es una forma controlada de modificar a las **propiedades** privadas de una clase, es lo contrario al `getter`. 
+
+Para definir un setter se hace mediante la palabra reservada `set` seguida del nombre de la propiedad. Al crear el metodo con `set` no podemos hacer retorno de valores, ya que por definición es una función `void`, ademas debemos pasarle como argumento el valor y __tipo de dato__ que se le va asignar a su correspondiente propiedad.
+
+**`Definición`**
+```js
+class MyClass {  /* Constructor */
+  constructor(
+    private propertieOne: string = "",
+    private propertieTwo: number = 0,
+    private _propertyThree: boolean = false
+  ) { /*...*/ }
+
+  /* Getters */
+  get propertieTwo() {
+    return this._propertieTwo
+  }
+  get propertyThree() {
+    return this._propertyThree
+  }
+
+  /* setters */
+  set propertieTwo(value) {
+    if(value <= 1000) {
+      this._propertieTwo = value
+    } else {
+      throw new Error('Value is out of range')
+    }
+  }
+  set propertyThree(value) {
+    this._propertyThree = value
+  }
+  /* Métodos */
+  // ...
+}
+```
+Al utilizar los métodos `setters` para asignar valores a las propiedades de la clase, podemos implementar validaciones para evitar posibles malas prácticas.
+
+**`Implementación`**
+```js
+const myObjClass = new MyClass()
+myObjClass.propertieOne = "Hola" // ❌ Se declaró como privada pero no tiene su metodo setter para asignarle valor.
+
+myObjClass.propertieTwo = 10 // ✅
+myObjClass.propertieTwo = 1001 // ❌ Obtendremos un error, el valor esta fuera del rango establecido en el setter.
+```
+
+
+>  ⚠️ **NOTA**: Por buenas prácticas el nombre de las propiedades de las clases privadas deben iniciar con un guión bajo (`_`) para 1. Distinguir que la variable es privada, 2. Evitar que choque la declaración del getter y setter con el nombre de la propiedad.
