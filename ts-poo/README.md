@@ -83,8 +83,8 @@ Podemos definir un elemento como público agregando la palabra recerbada `public
 ```js
 class MyClass {
   /* Propiedades */
-  propertyOne: string; // TS infiere la propiedad como public.
-  public propertyTwo: number; 
+  propertyOne: string // TS infiere la propiedad como public.
+  public propertyTwo: number 
 
   /* Constructor */
   // ... 
@@ -104,9 +104,9 @@ La forma de de definir un  **método** o **propiedad** es con la palabra recerva
 ```js
 class MyClass {
   /* Propiedades */
-  propertieOne: string; // TS infiere la propiedad como public.
-  public propertieTwo: number; 
-  private propertyThree: boolean;
+  propertieOne: string // TS infiere la propiedad como public.
+  public propertieTwo: number 
+  private propertyThree: boolean
 
   /* Constructor */
   // ... 
@@ -119,12 +119,12 @@ class MyClass {
 ```
 **`Implementación`**
 ```js
-const myObjClass = new MyClass();
+const myObjClass = new MyClass()
 myObjClass.propertieOne = "Hello from an object instance" // ✅
 myObjClass.methodTwo() // ✅
 
-myObjClass.propertyThree = false; // ❌
-myObjClass.methodThree(); // ❌
+myObjClass.propertyThree = false // ❌
+myObjClass.methodThree() // ❌
 ```
 
 ## Constructor
@@ -136,15 +136,15 @@ Un de las caracteristicas que tiene la función `constructor` en TypeScript es q
 ```js
 class MyClass {
   /* Propiedades */
-  propertieOne: string; // TS infiere la propiedad como public.
-  propertieTwo: number; 
-  private propertyThree: boolean;
+  propertieOne: string // TS infiere la propiedad como public.
+  propertieTwo: number 
+  private propertyThree: boolean
 
   /* Constructor */
   constructor(propertieOne, propertieTwo, propertyThree) {
-    this.propertieOne = propertieOne;
-    this.propertieTwo = propertieTwo;
-    this.propertyThree = propertyThree;
+    this.propertieOne = propertieOne
+    this.propertieTwo = propertieTwo
+    this.propertyThree = propertyThree
   }
 
   /* Métodos */
@@ -169,3 +169,38 @@ La regla que tiene la definición desde el constructor es que se les debe decir 
 
 En el ejemplo de arriba se esta asignando un valor por defecto a cada propiedad, esto permite crear instancias de un objeto sin enviar ningun argumento, se veria así `const myObj = new MyClass()`, en caso contrario TS nos marcaria la creación del objeto como erronea.
 
+## Getters y Setters
+### Getters
+Los `getters` es una forma controlada de acceder a las **propiedades** privadas de una clase. 
+
+Un `getter` es en realidad un método que lleva el nombre de la propiedad a la que representa, con la diferencia de que al inicio se coloca la palabra recervada `get`.
+
+>  ⚠️ **NOTA**: Por buenas prácticas el nombre de las propiedades de las clases privadas deben iniciar con un guión bajo (`_`) para 1. Distinguir que la variable es privada, 2. Evitar que choque la declaración del getter con el nombre de la propiedad.
+
+**`Definición`**
+```js
+class MyClass {  /* Constructor */
+  constructor(
+    public propertieOne: string = "",
+    private propertieTwo: number = 0,
+    private _propertyThree: boolean = false
+  ) { /*...*/ }
+
+  /* Getters */
+  get propertyThree() {
+    return this._propertyThree
+  }
+  /* Métodos */
+  // ...
+}
+```
+Un `getter` al ser una función puede incluir logica adicional antes de hacer el return de su respectiva propiedad. Otra ventaja es que para hacer uso de un `getter` lo podemos hacer como si pueda la propiedad misma no como el llamado a un método normal.
+
+**`Implementación`**
+```js
+const myObjClass = new MyClass()
+myObjClass.propertieTwo // ❌ Se declaró como privada pero no tiene su metodo getter
+myObjClass.propertyThree // ✅
+```
+
+### Setters
