@@ -538,3 +538,28 @@ class PostgreSqlDriver implements Drivers {
   disconnect(): void { }
 }
 ```
+
+## Abstracción 
+La abstracción es una característica funcamentar la programación orientada a objetos. Esta consiste en aislar un elemento (clase padre) del resto de los elementos que lo acompañan. Se efoma en "que hace" más que en el "¿cómo lo hace?".
+<br>
+En otras palabras la abstracción de una clase, nos imposibilita la creación de instancias de una clase que se declare como abstracta, sin embargo si podemos crear instancias de aquella clases que la hereden.
+<br> 
+En si las clases abstractas son "genericas", y no tiene caso crear instancias de ellas, para eso vamos a lo particular, donde utilizamos a sus clases hijas que son más especificas.
+
+**`Definición`**
+Para definir una clase abstracta se utiliza la palabra recervada  `abstract` antes de   `class`.
+```js
+export abstract class Animal {
+  // code ..  
+}
+
+export class Dog extends Animal{
+  // code ...
+}
+```
+**`Definición`**
+```js
+const animal = new Animal() // ❌ La clase puede ser instanciada
+
+const dog = new Dog() // ✅ Dog hereda de Animal, si podemos instanciar a Dog.
+```
