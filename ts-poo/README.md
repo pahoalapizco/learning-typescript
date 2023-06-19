@@ -563,3 +563,32 @@ const animal = new Animal() // ❌ La clase puede ser instanciada
 
 const dog = new Dog() // ✅ Dog hereda de Animal, si podemos instanciar a Dog.
 ```
+
+## Singleton
+El singleton es un patrón de diseño, tiene como objetivo asegurar que en nuestra 
+aplicación exista solo una instancia de la clase, prácticamente es imposible tener más de una instancia.
+
+La manera de lograr el objetivo de un singleton, es haciendo privado el contructor de la clase, así evitamos crear un objeto de la forma tradicional: `const obj = new Obj()`. 
+
+Entonces ¿cómo creamos un objeto de esa clas?, pues bien sería creando un metodo estatico que se encargue de crear el objeto. Recordemos que el constructor es privado y solo puede ser accecible desde la misma clase.
+
+En código sería más o menos así:
+```js
+export class Singleton {
+  // Guaramos la en una propiedad estatica.
+  private static instance: Singleton | null = null
+
+  private constructor() { }
+
+  // createIntance valida si ya existe una instancia creada
+  public static createInstance(): Singleton {
+    if(!Singleton.instance) {
+      // Solo la clase Singleton puede acceder al constructor privado.
+      Singleton.instance = new Singleton()
+    }
+
+    return Singleton.instance
+  }
+}
+```
+Este patrón de diseño es muy dicutido en si es bueno o no utilizarlo, pero cabe mencionar que hay ocaciones en las que es bastante útil tenerlo en nuestra aplicación, un ejemplo claro de ello son las conexiones a bases de datos, donde tener multiples instancias conectandose a una base de datos puede incurrir en latencias o incluso no recibir respuesta a consultas desde nuestra app.
