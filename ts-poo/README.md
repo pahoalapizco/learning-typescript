@@ -452,3 +452,89 @@ console.log(MyMath.PI) // 3.1416
 MyMath.PI = 1000 // ❌ ya no podemos asignarle un valor.
 console.log(MyMath.PI) // 1000
 ```
+
+## Interfaces
+Las interfaces describen la estructura de un objeto literal (`{ key: value }`), pero en programación orientada a objetos las interfaces funcionan como un contrato, donde se establecen que atributos y métodos deben tener aquellas clases que implementen la interfaz.
+
+**`Definición`**
+```js
+interface Driver {
+  // Atributos
+  database: string
+  password: string
+  port: number 
+
+  // Métodos
+  connect(): void
+  disconnect(): void
+}
+```
+**`Implementación`**
+Para decirle a una clase que utilice un interface se utilzia la palabra recervada `implements`.
+```js
+class MySqlDriver implements Driver {
+  constructor(
+    public database: string,
+    public password: string,
+    public port: number 
+  ) { }
+
+  connect(): void {
+    console.log('Conecting to MySql database')
+    // code ..
+  }
+
+  disconnect(): void {
+    console.log('Disconecting from MySql database')
+    // code ..
+  }
+}
+
+class PostgreSqlDriver implements Driver {
+  constructor(
+    public database: string,
+    public password: string,
+    public port: number 
+  ) { }
+
+  connect(): void {
+    console.log('Conecting to PostgreSql database')
+    // code ..
+  }
+
+  disconnect(): void {
+    console.log('Disconecting from PostgreSql database')
+    // code ..
+  }
+}
+```
+A diferencia de la herencia, las interfaces no establecen funcionalidad, solo definición de que es lo que debe llevar la clase, y es la clase misma quien implementa y da funcionalidad.
+
+> ✍️ **NOTA**: Los atributos y métodos definidos desde una interface deben especificarse como `public` en la clase. 
+
+Implementar una interface en una clase no la restringe de tener otros atributos con diferentes tipos de acceso u otros métodos.
+
+```js
+class MySqlDriver implements Drivers {
+  constructor(
+    public database: string,
+    public password: string,
+    public port: number
+  ) { }
+
+  connect(): void {}
+  disconnect(): void {}
+}
+
+class PostgreSqlDriver implements Drivers {
+  constructor(
+    public database: string,
+    public password: string,
+    public port: number,
+    protected host: string 
+  ) { }
+
+  connect(): void { }
+  disconnect(): void { }
+}
+```

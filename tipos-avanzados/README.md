@@ -176,6 +176,7 @@ El inconveniente con el operador or `||` es que evalua los valores `falsy`:
 - `null`
 - `undefined`
 - `NaN` 
+
 En el ejemplo anterior necesitamos respetar los valores `0` y `false` que corresponden a los valores de los parámetros. 
 <br>
 
