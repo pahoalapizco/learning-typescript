@@ -592,3 +592,56 @@ export class Singleton {
 }
 ```
 Este patrón de diseño es muy dicutido en si es bueno o no utilizarlo, pero cabe mencionar que hay ocaciones en las que es bastante útil tenerlo en nuestra aplicación, un ejemplo claro de ello son las conexiones a bases de datos, donde tener multiples instancias conectandose a una base de datos puede incurrir en latencias o incluso no recibir respuesta a consultas desde nuestra app.
+
+## Promesas
+Su definición:
+
+> _Una promesa es un objeto que representa la terminación o el fracaso de una operación asíncrona._
+[Fuente](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Using_promises)
+
+¿Cómo tipamos una promesa?, primeo necesitamos crear una funciónasincrona que nos regrese una promesa:
+```js
+const promiseFunc = () => {
+  return new Promise((resolve) => {
+    resolve(`Hello from promise resolve`)
+  })
+}
+```
+cuando creamos una función asincrona que retorna una promesa, TypeScrip infiere lo siguiente:
+![Promise](./imgs/11-promises_1.png)
+
+Nose dice que la función `promiseFunc` retornará una promesa `Promise` que va a resolver una respuesta de un tipo `unknown`. El problema con `unknown` es como su nombre lo dice, desconoce el valor/tipo de retorno y por lo tanto no puede acceder a las funciones de los tipos nativos o a los atributos de un objeto.
+
+Para solucionar el ese `unknown` solo necesitamos indicarle a la función que va a  retornar una `Promise` que resolvera un tipo especifico, en el ejempl oanterior un `string`
+
+```js
+const promiseFunc = (): Promise<string> => {
+  return new Promise((resolve) => {
+    resolve(`Hello from promise resolve`)
+  })
+}
+```
+Ahora TypeScript sabe que la promesa resolvera un string.
+![Promise](./imgs/11-Promises_2.png)
+
+Para corroborarlo solo necesitamos implementar la función
+```js
+promiseFunc()
+    .then(data => console.log(`🚀 response: ${data}`))
+```
+![Promise](./imgs/11-Promises_3.png)
+Ahora si TS sabe que el valor de data es un string lo puede tratar como tal accediendo a las funciones de los string.
+
+> ✍️ **NOTA**: También funciona con async/await.
+
+```js
+const promiseFunc = async (): Promise<string> => {
+  return new Promise((resolve) => {
+    resolve(`Hello from promise resolve`)
+  })
+}
+
+const data = await promiseFunc()
+console.log("🚀 data:", data.toUpperCase())
+```
+![Promise](./imgs/11-Promises_4.png)
