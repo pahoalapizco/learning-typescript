@@ -608,7 +608,7 @@ const promiseFunc = () => {
 }
 ```
 cuando creamos una función asincrona que retorna una promesa, TypeScrip infiere lo siguiente:
-![Promise](./imgs/11-promises_1.png)
+![Promise 1](./imgs/11-promises_1.png)
 
 Nose dice que la función `promiseFunc` retornará una promesa `Promise` que va a resolver una respuesta de un tipo `unknown`. El problema con `unknown` es como su nombre lo dice, desconoce el valor/tipo de retorno y por lo tanto no puede acceder a las funciones de los tipos nativos o a los atributos de un objeto.
 
@@ -622,14 +622,14 @@ const promiseFunc = (): Promise<string> => {
 }
 ```
 Ahora TypeScript sabe que la promesa resolvera un string.
-![Promise](./imgs/11-Promises_2.png)
+![Promise 2](./imgs/11-Promises_2.png)
 
 Para corroborarlo solo necesitamos implementar la función
 ```js
 promiseFunc()
     .then(data => console.log(`🚀 response: ${data}`))
 ```
-![Promise](./imgs/11-Promises_3.png)
+![Promise 3](./imgs/11-Promises_3.png)
 Ahora si TS sabe que el valor de data es un string lo puede tratar como tal accediendo a las funciones de los string.
 
 > ✍️ **NOTA**: También funciona con async/await.
@@ -644,4 +644,55 @@ const promiseFunc = async (): Promise<string> => {
 const data = await promiseFunc()
 console.log("🚀 data:", data.toUpperCase())
 ```
-![Promise](./imgs/11-Promises_4.png)
+![Promise 4](./imgs/11-Promises_4.png)
+
+## Tipado de respuestas HTTP
+Cuando hacemos solicitudes a una API con librerias como axios, las respuestas que esperamos son asincronas por ende las funciones que encapsulan el llamado a la API también deben serlo y deberan retornar una una promesa, con TypeScript podemos tipar la resolución de la promesa con un `type` o `interface` especifico.
+
+```js
+const getCategories = async (query?: TQuery): Promise<Category[]> => {
+  const withQuery = !query ? "" : `?limit=${query.limit}`
+
+  const { data } = await axios.get(`https://api.escuelajs.co/api/v1/categories${withQuery}`)
+  return data
+}
+
+const categories = await getCategories({ limit: 10 })
+```
+Cuando tipamos el retorno de nuestra función, al momento de implementarla, la variable donde guardamos el resultado queda inferida con el tipo de dato que va a resolver la promesa
+
+![Promise HTTP 1](./imgs/promises-http_1.png)
+
+Esta solución es sumamente útil para saber de antemano que vamos a esperar de retorno, sin embargo el tipado que realizamos es de "salida", esto quiere decir que solo tipa lo que vamos a retornar en la función, pero no lo que recibimos del request a la API, en este punto TypeScript no puede inferir la respuesta por que viene de un entorno externo, por lo tanto no es posible saber lo que nos va a llegar ni tampoco podemos hacer uso de los recursos y ayuda que nos provee un editor de código. Para solucionar ese inconveniente podemos tipar lo que esperamos recibir de la API.
+
+```js
+const getCategories = async (query?: TQuery) => {
+  const withQuery = !query ? "" : `?limit=${query.limit}`
+
+  const { data } = await axios.get<Category[]>(`https://api.escuelajs.co/api/v1/categories${withQuery}`)
+  return data
+}
+
+const categories = await getCategories({ limit: 10 })
+```
+Al colocar `<Category[]>` despues de la función `get` le estamos diciendo, en este caso a axios, que esperamos recibir un array con la estructura que tiene categories. Una ventaja de aplicar el tipado junto en la funcuón `get` es que TypeScript lo infiere al retorno, y por ende si regresamos a data en función, la variable donde la almacenemos llevará su tipado como si hubieramos colocado `Promise<Category[]>`.
+
+![Promise HTTP 2](./imgs/promises-http_2.png)
+
+> ⚠️ **NOTA:** El tipado a la respuesta que obtendremos de get lo podemos hacer gracias a las caracteristicas de la libreria axios, ya que no todas lo soportan.
+
+Otra manera de tipar el resultado el resultado proveniente del llamado a una API es forzando la variable que tenga el tipo que nececitamos.
+
+
+```js
+const getCategories = async (query?: TQuery): Promise<Category[]> => {
+  const withQuery = !query ? "" : `?limit=${query.limit}`
+
+  const response = await axios.get(`https://api.escuelajs.co/api/v1/categories${withQuery}`)
+  const data = response.data as Category[]
+  return data
+}
+const categories = await getCategories({ limit: 10 })
+```
+| ![Promise HTTP 3](./imgs/promises-http-3.png) | ![Promise HTTP 4](./imgs/promises-http-4.png) |
+| --- | --- |
