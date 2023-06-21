@@ -1,7 +1,7 @@
 import axios from "axios"
 // Interfaces
-import { Product } from "./product.model"
-import { Category } from "./category.model"
+import { Product } from "./models/product.model"
+import { Category } from "./models/category.model"
 
 (async () => {
   type TQuery = {
