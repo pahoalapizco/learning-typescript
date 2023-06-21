@@ -1,12 +1,9 @@
-import { Category } from "./category.model";
+import { BaseModel, Category } from "@models/index";
 
-export interface Product {
-  id:          number;
+export interface Product extends BaseModel{
   title:       string;
   price:       number;
   description: string;
   images:      string[];
-  creationAt:  Date;
-  updatedAt:   Date;
   category:    Category;
 }
