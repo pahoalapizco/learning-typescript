@@ -725,3 +725,5 @@ Cuando llamamos la función `functionName` ya colocampos entre `< >` la palabra 
 | string | ![String](./imgs/generics_string.png)  |
 | array | ![Array](./imgs/generics_array.png)  |
 
+
+> ✍️ **NOTA**: La convención para nombrar a los `generics` es con la letra `T`.
