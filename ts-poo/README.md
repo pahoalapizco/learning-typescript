@@ -727,3 +727,15 @@ Cuando llamamos la función `functionName` ya colocampos entre `< >` la palabra 
 
 
 > ✍️ **NOTA**: La convención para nombrar a los `generics` es con la letra `T`.
+
+## Decoradores
+Los `decorators` extienden la funcionalidad de clases, metodos, variables y propiedades, actualmente esta soportada de forma experimental y no nativa en TypeScript, para poder utilizarlos debemos abrir el archivo `tsconfig.json` y la línea con el key-value `"experimentalDecorators": true,` 
+
+Un decorador se implemente utilizando el `@` seguido del nombre del decorador que por convención debe estar escrito en `PascalCase`.
+
+
+Existe una librería llamada [class-validator](https://github.com/typestack/class-validator) que pone a nuestra disposición muchisimos decoradores que podemos implementar para añadir funcionalidad adicional a nuestras funciones, variables, etc.
+
+```js
+
+```
