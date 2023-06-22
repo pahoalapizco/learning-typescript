@@ -696,3 +696,32 @@ const categories = await getCategories({ limit: 10 })
 ```
 | ![Promise HTTP 3](./imgs/promises-http-3.png) | ![Promise HTTP 4](./imgs/promises-http-4.png) |
 | --- | --- |
+
+## Genericos
+Los `generics` nos permiten crear funciones, clases, metodos, etc. con tipado dinamico, a diferencia de `any` y `unknown` con `generic` le decimos al elemento que va a receibir un tipo de dato pero que aun no sabemos cual será.
+
+Entonces, ¿cómo sabe TypeScript cual tipo de dato sera?, pues bien eso se lo decimos nosotros cuando llamemos a la clase, función ó método.
+
+Su sintaxis es la siguiente:
+1. En la definición de una función
+```js
+function functionName<Type>(value: Type) {
+  return value
+}
+```
+Cuando definimos la función `functionName` entre los simbolos `< >` le mandamos `Type` el cual va a tomar el tipo de dato que le digamos a la hora de llamar la función.
+
+
+2. En el llamado de la función
+```js
+const myValue = functionName<number>(12) 
+```
+Cuando llamamos la función `functionName` ya colocampos entre `< >` la palabra `Type` sino el tipo real que esperamos recibir de retorno, en el ejemplo es un `number`, aplica de igual forma si le mandamos otro tipo de dato.
+
+| Tipo de dato| Imagen |
+|-|-|
+| function | ![Función](./imgs/generics_function.png) |
+| number | ![Number](./imgs/generics_number.png)  |
+| string | ![String](./imgs/generics_string.png)  |
+| array | ![Array](./imgs/generics_array.png)  |
+
