@@ -379,7 +379,24 @@ shirtSize = "M";
 yourSize(shirtSize) // M
 ```
 
- ## Funciones
+### Template union type
+Como su nombre lo indica, a los aliasa (types) le podemos especificar un template o estructura que debe serguir el valor que deseamos asignar a la variable tipada como `template union type`. 
+Definición:
+Su definición es similar a cuando creamos un template literal de un string, con la diferencia que entre las llaves `{}` no va una variable, sino el tipo de dato que debe contener.
+```js
+type UserID = `${string}`
+```
+El ejemplo anterior es lo mismo que decir `type UserID = string`, lo cual no tiene sentido, pues con los template union types podemos ir mas allá:
+```js
+type UserID = `#${string}-${string}` // <- Aquí definimos una estructura a seguir.
+
+const userId: UserID = "#abc-abc" // ✅ Seguimos la estructura
+const otherUserId: UserID = "abc-abc" // ❌ No sigue la estructura por que no lleva el # al inicio.
+```
+
+> ✍️ **`NOTA`** `Record es un apunte adicional que no se incluyó en el curso.
+
+## Funciones
 Asignar un tipo (tipos) de dato a los parametros de una función nos ayudan a llevar a cabo una implementación más segura de nuestro código.
 
 Definición de una función con parametros tipados:

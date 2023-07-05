@@ -513,6 +513,30 @@ interface FinfProductDTO extends Readonly<Partial <Omit <Product, 'tags'> > >  {
 En el ejmplo que extiende de una `interface` encontramos el siguiente anidamiento `Readonly<Partial <Omit <Product, 'tags'> > >`, el cual ssignifica:
 > De `Product` vamos a omitir la propiedad `tag`, el resto de propiedades pertenecientes  `Product` seran opcionales (`partial`) y a su ves seran de solo lectura (`Readonly`).
 
+### Record
+Este utility type nos permite crear un alias para objetos, donde  tanto los `keys` como los `values` sean de un tipo especifico.
+**`Definición`**
+```js
+type FinfProduct = Record<string, string>
+
+const find: FinfProduct = { "title": "This is a product" } // ✅
+const findOther: FinfProduct = { "price": 500 } // ❌  el value es de tipo number
+```
+La ventaja de `Record` es que especificar el tipo de dato que debe tener la `key` de un objeto, esto es sumamente útil cuando creamos objetos dinamicos (no necesariamente lleva una `key` con un nombre especifico). Incluso podemos tipar la `key` con un type definido previavente definido en desarrollo.
+
+**`Definición`**
+```js
+// Objeto a con keys partir de valor de un id.
+type Id = `#${string}-${string}`
+
+type ProductsId = Record<Id, number>
+
+const prod: ProductsId = { "#abc-def": 1 } // ✅
+const otherProd: ProductsId = { "title": 500 } // ❌ el key "title" no cumple con la especificación del alias Id
+```
+
+> ✍️ **`NOTA`** `Record es un apunte adicional que no se incluyó en el curso.
+
 ## Tipado por indice
 Es una forma de acceder al tipo de dato de un atributo especifico de un `type`  o `interface`. <br>
 Del interface `Product`
