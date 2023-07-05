@@ -1,4 +1,4 @@
-import { IMoves, TMoves } from "./types";
+import { IMoves, TDrunkardId, TMoves } from "./types";
 
 export class Drunkard {
   private moves: IMoves = {
@@ -7,12 +7,12 @@ export class Drunkard {
     left: [-1, 0],
     right: [1, 0],
   }
-  private _drunkardID: symbol | null = null
+  private _drunkardID: TDrunkardId
 
   constructor(
     public name: string
   ){
-    this._drunkardID = Symbol(this.name)
+    this._drunkardID = crypto.randomUUID()
   }
 
   public get drunkardID() {
@@ -22,9 +22,9 @@ export class Drunkard {
   walk(): TMoves[] {
     const choice: number = Math.floor(Math.random() * Object.keys(this.moves).length)
     if(choice === 0) return this.moves.up
-    else if(choice === 0) return this.moves.down
-    else if(choice === 0) return this.moves.right
-    
+    else if(choice === 1) return this.moves.down
+    else if(choice === 2) return this.moves.left
+
     return this.moves.right
   }
 }
